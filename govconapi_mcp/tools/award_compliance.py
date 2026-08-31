@@ -8,11 +8,12 @@ import json
 from typing import Optional
 
 from ..core import mcp, _get
+from mcp.types import ToolAnnotations
 
 
 # ─── Contracts (FPDS prime awards) ─────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Search Contracts", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_contracts(
     uei: Optional[str] = None,
     parent_uei: Optional[str] = None,
@@ -65,7 +66,7 @@ async def search_contracts(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Contract", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_contract(piid: str) -> str:
     """Get one contract's LATEST transaction plus a roll-up of obligation/value totals
     across every modification.
@@ -88,7 +89,7 @@ async def get_contract(piid: str) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Contract Modifications", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_contract_modifications(piid: str, limit: int = 100, offset: int = 0) -> str:
     """Get EVERY transaction row for a contract, oldest action first, the full
     modification trail (amendments, options exercised, partial terminations), not just
@@ -109,7 +110,7 @@ async def get_contract_modifications(piid: str, limit: int = 100, offset: int = 
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Contract Vehicle", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_contract_vehicle(piid: str) -> str:
     """Get the contract vehicle (IDIQ, GWAC, FSS schedule, or BPA) this order was placed
     against.
@@ -130,7 +131,7 @@ async def get_contract_vehicle(piid: str) -> str:
 
 # ─── Vehicles (IDVs) ────────────────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Search Vehicles", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_vehicles(
     uei: Optional[str] = None,
     parent_uei: Optional[str] = None,
@@ -175,7 +176,7 @@ async def search_vehicles(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Vehicle", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_vehicle(piid: str) -> str:
     """Get one contract vehicle's detail: ceiling, period, and what's been ordered
     through it.
@@ -198,7 +199,7 @@ async def get_vehicle(piid: str) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Vehicle Holders", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_vehicle_holders(piid: str, limit: int = 50) -> str:
     """Get who holds a vehicle AND who's actually earning through it, two distinct
     populations, don't conflate them: a firm can hold a vehicle for years and earn
@@ -223,7 +224,7 @@ async def get_vehicle_holders(piid: str, limit: int = 50) -> str:
 
 # ─── Subawards (FFATA) ──────────────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Search Subawards", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_subawards(
     prime_uei: Optional[str] = None,
     sub_uei: Optional[str] = None,
@@ -268,7 +269,7 @@ async def search_subawards(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Subaward", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_subaward(subaward_sam_report_id: str) -> str:
     """Get one FFATA subaward report by its SAM report ID.
 
@@ -280,7 +281,7 @@ async def get_subaward(subaward_sam_report_id: str) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Prime Subawards", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_prime_subawards(
     uei: str,
     date_from: Optional[str] = None,
@@ -307,7 +308,7 @@ async def get_prime_subawards(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Prime Relationships", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_prime_relationships(
     uei: str,
     date_from: Optional[str] = None,
@@ -333,7 +334,7 @@ async def get_prime_relationships(
 
 # ─── Bid Protests ────────────────────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Search Protests", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_protests(
     outcome: Optional[str] = None,
     agency: Optional[str] = None,
@@ -374,7 +375,7 @@ async def search_protests(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Protests On Solicitation", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_protests_on_solicitation(solicitation_number: str) -> str:
     """Get every protest filed on ONE solicitation, the contestability read for a
     specific opportunity or award: any protest pending right now, and the statutory date

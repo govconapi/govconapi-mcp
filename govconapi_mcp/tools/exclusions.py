@@ -6,9 +6,10 @@ import json
 from typing import Optional
 
 from ..core import mcp, _get
+from mcp.types import ToolAnnotations
 
 
-@mcp.tool()
+@mcp.tool(title="Check Exclusion", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def check_exclusion(
     name: Optional[str] = None,
     uei: Optional[str] = None,

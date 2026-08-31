@@ -8,11 +8,12 @@ import json
 from typing import Optional
 
 from ..core import mcp, _get
+from mcp.types import ToolAnnotations
 
 
 # ─── Companies (won at least one award) ───────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Search Companies", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_companies(
     q: Optional[str] = None,
     naics: Optional[str] = None,
@@ -51,7 +52,7 @@ async def search_companies(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Company Profile", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_company_profile(uei: str) -> str:
     """Get one company's aggregate profile: SAM registration (legal name, address, NAICS,
     PSC, certifications) combined with award-history totals.
@@ -72,7 +73,7 @@ async def get_company_profile(uei: str) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Company Awards", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_company_awards(
     uei: str,
     limit: int = 50,
@@ -100,7 +101,7 @@ async def get_company_awards(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Company Peers", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_company_peers(uei: str, limit: int = 10) -> str:
     """Find companies similar to this one by NAICS + agency overlap, the competitive
     landscape around a firm, not its own history.
@@ -121,7 +122,7 @@ async def get_company_peers(uei: str, limit: int = 10) -> str:
 
 # ─── Entities (the full SAM registry, award or not) ───────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Search Entities", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_entities(
     q: Optional[str] = None,
     naics: Optional[str] = None,
@@ -159,7 +160,7 @@ async def search_entities(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Entities Expiring", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_entities_expiring(
     within_days: int = 60,
     state: Optional[str] = None,
@@ -186,7 +187,7 @@ async def get_entities_expiring(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Entity", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_entity(uei: Optional[str] = None, cage_code: Optional[str] = None) -> str:
     """Get one SAM entity's full registration record by UEI or CAGE code, the same
     question, two different keys, so this is one tool, not two.
@@ -208,7 +209,7 @@ async def get_entity(uei: Optional[str] = None, cage_code: Optional[str] = None)
 
 # ─── Partners (teaming) ────────────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Search Partners", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_partners(
     naics: Optional[str] = None,
     agency: Optional[str] = None,
@@ -247,7 +248,7 @@ async def search_partners(
 
 # ─── Company-contact resolver ──────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Get Company Contact", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_company_contact(uei: str) -> str:
     """Resolve a vendor's REAL decision-maker contact, SAM registration agents
     (third-party filing services) are filtered out, so this is the actual point of
@@ -267,7 +268,7 @@ async def get_company_contact(uei: str) -> str:
 
 # ─── Contacts (buyer intel, contracting officers) ─────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Search Contacts", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_contacts(
     name: Optional[str] = None,
     agency: Optional[str] = None,
@@ -293,7 +294,7 @@ async def search_contacts(
 
 # ─── Recompetes (also an early Capture signal; see Post-Award for the monitoring use) ──
 
-@mcp.tool()
+@mcp.tool(title="Search Recompetes", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_recompetes(
     naics: Optional[str] = None,
     agency: Optional[str] = None,
@@ -347,7 +348,7 @@ async def search_recompetes(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Recompete", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_recompete(piid: str) -> str:
     """Get one recompeting/expiring contract by PIID, plus incumbent-vulnerability
     signals (cert-lapse, lone-holder, single-agency dependence) composed from the

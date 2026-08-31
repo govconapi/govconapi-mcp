@@ -6,9 +6,10 @@ import json
 import re
 
 from ..core import mcp, _get
+from mcp.types import ToolAnnotations
 
 
-@mcp.tool()
+@mcp.tool(title="Lookup Agency", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def lookup_agency(query: str) -> str:
     """Resolve an agency acronym or partial name to canonical SAM.gov agency strings.
 

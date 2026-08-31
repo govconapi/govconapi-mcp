@@ -7,11 +7,12 @@ import json
 from typing import Optional
 
 from ..core import mcp, _get
+from mcp.types import ToolAnnotations
 
 
 # ─── Contracting Offices ──────────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Discover Offices", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def discover_offices(
     naics: str,
     sort: str = "biggest",
@@ -39,7 +40,7 @@ async def discover_offices(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Office Profile", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_office_profile(office_code: str) -> str:
     """Get one contracting office's full buying profile: obligations, competition,
     set-aside lean, and every NAICS it buys.
@@ -59,7 +60,7 @@ async def get_office_profile(office_code: str) -> str:
 
 # ─── Federal Hierarchy ────────────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="List Organizations", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def list_organizations(
     type: Optional[str] = None,
     cgac: Optional[str] = None,
@@ -98,7 +99,7 @@ async def list_organizations(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Organization", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_organization(organization_id: int) -> str:
     """Get one federal organization's full record, with its parent, immediate children,
     and full ancestor chain (root department down to immediate parent) all included in
@@ -117,7 +118,7 @@ async def get_organization(organization_id: int) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Org Relationships", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_org_relationships(organization_id: int, direction: str = "children") -> str:
     """Get JUST an organization's immediate children or its ancestor chain, without the
     rest of the record (get_organization already includes both if you need everything).
@@ -138,7 +139,7 @@ async def get_org_relationships(organization_id: int, direction: str = "children
 
 # ─── Procurement Forecasts ────────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Search Forecasts", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_forecasts(
     source: Optional[str] = None,
     agency: Optional[str] = None,
@@ -193,7 +194,7 @@ async def search_forecasts(
 
 # ─── NAICS / Market Pulse ─────────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Find NAICS Codes", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def find_naics_codes(
     sector: Optional[str] = None,
     prefix: Optional[str] = None,
@@ -236,7 +237,7 @@ async def find_naics_codes(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get NAICS Leaderboard", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_naics_leaderboard(board: str, limit: int = 30) -> str:
     """Browse curated, ranked NAICS market leaderboards, a fixed set of named rankings,
     distinct from find_naics_codes' open filtered search.
@@ -256,7 +257,7 @@ async def get_naics_leaderboard(board: str, limit: int = 30) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get NAICS Market", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_naics_market(code: str) -> str:
     """Get the federal market profile for one NAICS code: spending, competition,
     set-aside leverage, top buyers, and top incumbents.
@@ -278,7 +279,7 @@ async def get_naics_market(code: str) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get NAICS Positioning", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_naics_positioning(code: str) -> str:
     """Get the language and set-aside makeup for a NAICS code's SOLICITATION side: the
     phrase vocabulary contracting officers actually use in notices, the set-aside share
@@ -297,7 +298,7 @@ async def get_naics_positioning(code: str) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get NAICS Simplified Acquisition", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_naics_simplified_acquisition(code: str) -> str:
     """Get the award-value breakdown for a NAICS code over the last 12 months of FPDS
     prime awards: counts of micro / simplified-acquisition / above-SAT awards, and which
@@ -319,7 +320,7 @@ async def get_naics_simplified_acquisition(code: str) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get NAICS Competition", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_naics_competition(code: str) -> str:
     """Get how contested a NAICS market is, over the whole FPDS prime-award market: offers
     received per award, single-bidder share, top place-of-performance states, award-volume

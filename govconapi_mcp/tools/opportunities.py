@@ -5,9 +5,10 @@ import json
 from typing import Optional
 
 from ..core import mcp, _get
+from mcp.types import ToolAnnotations
 
 
-@mcp.tool()
+@mcp.tool(title="Search Opportunities", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_opportunities(
     naics: Optional[str] = None,
     psc: Optional[str] = None,
@@ -79,7 +80,7 @@ async def search_opportunities(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Opportunity", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_opportunity(notice_id: str) -> str:
     """Fetch a single contract opportunity by its notice_id.
 
@@ -90,7 +91,7 @@ async def get_opportunity(notice_id: str) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Recent Changes", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def recent_changes(
     since: str,
     limit: int = 100,

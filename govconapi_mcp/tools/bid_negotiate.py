@@ -8,11 +8,12 @@ import json
 from typing import Optional
 
 from ..core import mcp, _get
+from mcp.types import ToolAnnotations
 
 
 # ─── Contract Price Benchmarks ─────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Get Price Benchmark", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_price_benchmark(
     naics: str,
     set_aside: Optional[str] = None,
@@ -54,7 +55,7 @@ async def get_price_benchmark(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Price Position", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_price_position(
     naics: str,
     value: str,
@@ -94,7 +95,7 @@ async def get_price_position(
 
 # ─── Labor Rate Benchmarks ──────────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Get Labor Rate Benchmark", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_labor_rate_benchmark(
     labor_category: str,
     match: str = "contains",
@@ -147,7 +148,7 @@ async def get_labor_rate_benchmark(
 
 # ─── Wage Determinations ────────────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Search Wage Determinations", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_wage_determinations(
     type: Optional[str] = None,
     state: Optional[str] = None,
@@ -190,7 +191,7 @@ async def search_wage_determinations(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get WDs By Location", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_wds_by_location(
     state: str, county: Optional[str] = None, type: Optional[str] = None,
     limit: int = 25, offset: int = 0,
@@ -216,7 +217,7 @@ async def get_wds_by_location(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Wage Rates", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_wage_rates(
     classification: Optional[str] = None,
     type: Optional[str] = None,
@@ -252,7 +253,7 @@ async def get_wage_rates(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Wage Rate Summary", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_wage_rate_summary(
     occupation_code: Optional[str] = None,
     classification: Optional[str] = None,
@@ -285,7 +286,7 @@ async def get_wage_rate_summary(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool()
+@mcp.tool(title="Get Wage Determination", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_wage_determination(wd_id: str) -> str:
     """Get one wage determination's full record: location array, every classification's
     hourly wage + fringe, and (for CBAs) the contractor/union detail block.
@@ -301,7 +302,7 @@ async def get_wage_determination(wd_id: str) -> str:
 
 # ─── Vendor Risk ─────────────────────────────────────────────────────────────
 
-@mcp.tool()
+@mcp.tool(title="Get Vendor Risk Report", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_vendor_risk_report(uei: str) -> str:
     """Get a 7-signal vendor risk report for one UEI, screening facts for teaming or
     subcontracting due diligence, before you commit to a partner.

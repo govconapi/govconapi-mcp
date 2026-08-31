@@ -13,9 +13,10 @@ import json
 from typing import Optional
 
 from ..core import mcp, _get
+from mcp.types import ToolAnnotations
 
 
-@mcp.tool()
+@mcp.tool(title="Search Awards", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_awards(
     awardee: Optional[str] = None,
     uei: Optional[str] = None,
