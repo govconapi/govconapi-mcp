@@ -13,7 +13,7 @@ from mcp.types import ToolAnnotations
 
 # ─── Contracts (FPDS prime awards) ─────────────────────────────────────────
 
-@mcp.tool(title="Search Contracts", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Search FPDS Contract Transactions", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_contracts(
     uei: Optional[str] = None,
     parent_uei: Optional[str] = None,
@@ -110,7 +110,7 @@ async def get_contract_modifications(piid: str, limit: int = 100, offset: int = 
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool(title="Get Contract Vehicle", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Get the Vehicle Behind a Contract", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_contract_vehicle(piid: str) -> str:
     """Get the contract vehicle (IDIQ, GWAC, FSS schedule, or BPA) this order was placed
     against.
@@ -176,7 +176,7 @@ async def search_vehicles(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool(title="Get Vehicle", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Get Vehicle Detail", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_vehicle(piid: str) -> str:
     """Get one contract vehicle's detail: ceiling, period, and what's been ordered
     through it.
@@ -375,7 +375,7 @@ async def search_protests(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool(title="Get Protests On Solicitation", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Get Protests on a Solicitation", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_protests_on_solicitation(solicitation_number: str) -> str:
     """Get every protest filed on ONE solicitation, the contestability read for a
     specific opportunity or award: any protest pending right now, and the statutory date

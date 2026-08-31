@@ -16,7 +16,7 @@ from ..core import mcp, _get
 from mcp.types import ToolAnnotations
 
 
-@mcp.tool(title="Search Awards", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Search SAM Award Notices", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_awards(
     awardee: Optional[str] = None,
     uei: Optional[str] = None,

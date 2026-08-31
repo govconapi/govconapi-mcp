@@ -118,7 +118,7 @@ async def get_organization(organization_id: int) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool(title="Get Org Relationships", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Get Organization Relationships", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_org_relationships(organization_id: int, direction: str = "children") -> str:
     """Get JUST an organization's immediate children or its ancestor chain, without the
     rest of the record (get_organization already includes both if you need everything).
@@ -298,7 +298,7 @@ async def get_naics_positioning(code: str) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool(title="Get NAICS Simplified Acquisition", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Get NAICS Simplified-Acquisition Breakdown", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_naics_simplified_acquisition(code: str) -> str:
     """Get the award-value breakdown for a NAICS code over the last 12 months of FPDS
     prime awards: counts of micro / simplified-acquisition / above-SAT awards, and which

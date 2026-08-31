@@ -9,7 +9,7 @@ from ..core import mcp, _get
 from mcp.types import ToolAnnotations
 
 
-@mcp.tool(title="Check Exclusion", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Check Exclusions for a Vendor", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def check_exclusion(
     name: Optional[str] = None,
     uei: Optional[str] = None,

@@ -160,7 +160,7 @@ async def search_entities(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool(title="Get Entities Expiring", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Get Expiring SAM Registrations", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_entities_expiring(
     within_days: int = 60,
     state: Optional[str] = None,
@@ -248,7 +248,7 @@ async def search_partners(
 
 # ─── Company-contact resolver ──────────────────────────────────────────────
 
-@mcp.tool(title="Get Company Contact", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Get Company Decision-Maker Contact", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_company_contact(uei: str) -> str:
     """Resolve a vendor's REAL decision-maker contact, SAM registration agents
     (third-party filing services) are filtered out, so this is the actual point of
@@ -268,7 +268,7 @@ async def get_company_contact(uei: str) -> str:
 
 # ─── Contacts (buyer intel, contracting officers) ─────────────────────────
 
-@mcp.tool(title="Search Contacts", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Search Contracting Officer Contacts", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_contacts(
     name: Optional[str] = None,
     agency: Optional[str] = None,

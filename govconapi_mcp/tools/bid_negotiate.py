@@ -191,7 +191,7 @@ async def search_wage_determinations(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool(title="Get WDs By Location", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Get Wage Determinations by Location", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_wds_by_location(
     state: str, county: Optional[str] = None, type: Optional[str] = None,
     limit: int = 25, offset: int = 0,
@@ -217,7 +217,7 @@ async def get_wds_by_location(
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool(title="Get Wage Rates", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Query Wage Rates Across Determinations", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def get_wage_rates(
     classification: Optional[str] = None,
     type: Optional[str] = None,

@@ -91,7 +91,7 @@ async def get_opportunity(notice_id: str) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
-@mcp.tool(title="Recent Changes", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Recent Opportunity Changes", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def recent_changes(
     since: str,
     limit: int = 100,

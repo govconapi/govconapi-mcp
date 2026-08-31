@@ -8,7 +8,7 @@ from ..core import mcp, _get
 from mcp.types import ToolAnnotations
 
 
-@mcp.tool(title="Resolve Identifier", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
+@mcp.tool(title="Resolve DUNS to UEI", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def resolve_identifier(identifier: str) -> str:
     """Resolve between legacy DUNS (9 digits, or 13-digit DUNS+4) and current UEI
     (12 alphanumeric), accepts either side, returns both plus the entity name.
