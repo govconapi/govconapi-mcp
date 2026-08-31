@@ -1,0 +1,30 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.govconapi/govconapi",
+  "title": "GovCon API",
+  "description": "US federal procurement data for agents: SAM.gov opportunities, FPDS contract awards, SAM entities, FFATA subawards, exclusions, and full-text search inside solicitation attachments.",
+  "repository": {
+    "url": "https://github.com/govconapi/govconapi-mcp",
+    "source": "github"
+  },
+  "version": "0.2.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "govconapi-mcp",
+      "version": "0.2.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "GOVCONAPI_KEY",
+          "description": "Your GovCon API key. Free 14-day trial, no credit card, at https://govconapi.com",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}
