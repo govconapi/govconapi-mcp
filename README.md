@@ -1,3 +1,5 @@
+<!-- mcp-name: io.github.govconapi/govconapi -->
+
 # GovCon API MCP
 
 ![MCP server](https://img.shields.io/badge/MCP-server-5865F2) ![53 tools](https://img.shields.io/badge/tools-53-1f6feb) ![corpus](https://img.shields.io/badge/corpus-10.8M_FPDS_transactions-1f6feb) [![from $19/mo](https://img.shields.io/badge/from-%2419%2Fmo-2ea44f)](https://govconapi.com/pricing)

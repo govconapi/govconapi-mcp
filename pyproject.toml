@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "govconapi-mcp"
-version = "0.2.0"
+version = "0.2.1"
 description = "MCP server for GovCon API: 53 tools spanning the federal contracting lifecycle (market research, opportunity discovery, capture and teaming, bid and proposal, award and compliance) for Claude Desktop, Claude Code, Cursor, Zed, or any local MCP client."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -29,7 +29,8 @@ dependencies = [
 [project.urls]
 Homepage = "https://govconapi.com"
 Documentation = "https://govconapi.com/api-guide"
-Repository = "https://github.com/rozetyp/sam-api"
+Repository = "https://github.com/govconapi/govconapi-mcp"
+Issues = "https://github.com/govconapi/govconapi-mcp/issues"
 
 [project.scripts]
 govconapi-mcp = "govconapi_mcp.server:main"
