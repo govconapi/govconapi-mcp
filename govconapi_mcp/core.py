@@ -10,6 +10,7 @@ the *definitions* are split across files by stage, not jammed into one file.
 from __future__ import annotations
 
 import os
+from importlib.metadata import PackageNotFoundError, version as _installed_version
 
 import httpx
 from mcp.server.fastmcp import FastMCP
@@ -17,7 +18,16 @@ from mcp.server.fastmcp import FastMCP
 BASE_URL = os.environ.get("GOVCONAPI_BASE", "https://govconapi.com")
 API_KEY = os.environ.get("GOVCONAPI_KEY")
 TIMEOUT = 30.0
-USER_AGENT = "govconapi-mcp/0.2.0"
+
+# Read the version from installed package metadata rather than repeating it here.
+# A hardcoded string silently drifts: it still said 0.2.0 at the 0.2.2 release, so
+# usage logs mislabelled the client and under-reported which build callers ran.
+# `unknown` only when running from a source tree that was never installed.
+try:
+    _VERSION = _installed_version("govconapi-mcp")
+except PackageNotFoundError:  # pragma: no cover - source checkout, not an install
+    _VERSION = "unknown"
+USER_AGENT = f"govconapi-mcp/{_VERSION}"
 
 mcp = FastMCP("govconapi")
 
