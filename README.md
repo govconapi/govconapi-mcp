@@ -2,11 +2,13 @@
 
 # GovCon API MCP
 
-![MCP server](https://img.shields.io/badge/MCP-server-5865F2) ![53 tools](https://img.shields.io/badge/tools-53-1f6feb) ![corpus](https://img.shields.io/badge/corpus-10.8M_FPDS_transactions-1f6feb) [![from $19/mo](https://img.shields.io/badge/from-%2419%2Fmo-2ea44f)](https://govconapi.com/pricing)
+![MCP server](https://img.shields.io/badge/MCP-server-5865F2) ![53 tools](https://img.shields.io/badge/tools-53-1f6feb) ![5 federal sources](https://img.shields.io/badge/sources-5_federal-1f6feb) [![from $19/mo](https://img.shields.io/badge/from-%2419%2Fmo-2ea44f)](https://govconapi.com/pricing)
 
 **Most SAM.gov MCP servers wrap one dataset behind six to ten tools. This is 53 tools across five federal sources, already joined on the identifiers they share, including full text extracted from inside solicitation attachments.**
 
-US federal procurement data for agents: **668,576** SAM.gov opportunities, **10,787,941** FPDS prime contract transactions, **887,310** SAM-registered entities, **225,945** FFATA subawards, **164,322** exclusions, **13,778** decided GAO protests, and **~262,000** GSA CALC labor rates. Cross-linked on UEI, CAGE, PIID and NAICS, so one question does not become five integrations.
+US federal procurement data for agents: **668K** SAM.gov opportunities, **10.6M** FPDS prime contract transactions, **880K** SAM-registered entities, **226K** FFATA subawards, **164K** exclusions, **14K** decided GAO protests, and **~262K** GSA CALC labor rates. Cross-linked on UEI, CAGE, PIID and NAICS, so one question does not become five integrations.
+
+*Counts as of 2026-08-31, rounded. The corpus grows daily, so this file is a snapshot: current per-source totals and freshness dates are always live at [`/api/v1/status`](https://govconapi.com/api/v1/status), no key required.*
 
 > **Free 14-day trial, no credit card.** [Get a key](https://govconapi.com), then `pipx install govconapi-mcp`.
 
@@ -16,7 +18,7 @@ US federal procurement data for agents: **668,576** SAM.gov opportunities, **10,
 
 Most federal-contracting MCP servers are thin proxies over the official SAM.gov API. Four concrete differences.
 
-- **It searches inside the documents, not just the notice.** We extracted and indexed the full text of **506,382 documents** attached to **209,095 opportunities**, 31.4 billion characters, including **57,527 files recovered from archives nested up to five levels deep** that never appear in SAM's own attachment list, and **41,764 scanned documents recovered with OCR** (measured 2026-07-16). A requirement like CMMC, a clearance level, or an option year is usually in the SOW, not the notice. Most tools structurally cannot see it.
+- **It searches inside the documents, not just the notice.** We extract and index the full text of every document attached to a notice. A corpus study on **2026-07-16** measured **506,382 documents** across **209,095 opportunities**, 31.4 billion characters, including **57,527 files recovered from archives nested up to five levels deep** that never appear in SAM's own attachment list, and **41,764 scanned documents recovered with OCR**. Those five figures are one dated measurement and belong together; the index has grown since, and the running total is on [`/api/v1/status`](https://govconapi.com/api/v1/status). A requirement like CMMC, a clearance level, or an option year is usually in the SOW, not the notice. Most tools structurally cannot see it.
 - **Five sources, already joined.** SAM.gov opportunities and entities, FPDS contract transactions, USAspending/FFATA subawards, SAM exclusions, SBA DSBS certifications and GSA CALC rates, resolved onto shared identifiers. A wrapper hands your agent one dataset and leaves the joins to it.
 - **No SAM.gov entity registration and no company UEI required.** GSA documents 10 requests/day for a non-federal user without a SAM role, and 1,000/day with one. Access here is an email and a key.
 - **53 tools, organised by lifecycle stage.** Market research, opportunity discovery, capture and teaming, bid and negotiate, award and compliance. You should not have to know our URL structure to know which tool answers your question.
@@ -120,11 +122,27 @@ MCP access is included with every plan, including the trial. No separate tier.
 
 ---
 
+## Privacy Policy
+
+Full policy: **<https://govconapi.com/privacy>**
+
+What this server does with your data, in short:
+
+- **Your API key** is read from `GOVCONAPI_KEY` in your own client's config and sent to `https://govconapi.com` in the `Authorization` header. This server process does not write it to disk or transmit it anywhere else.
+- **Your tool calls** become ordinary GovCon API requests. As with any request to the API, we log the timestamp, endpoint, query parameters, response status, response time and which key made the call, for billing, rate-limit enforcement and abuse detection. Usage logs are retained for 90 days.
+- **No conversation content leaves your machine.** Only the tool parameters your client fills in are sent, never the surrounding chat, and we log the status a request returned, not the contents of the response.
+- **We do not sell your data.**
+- **The data returned is public US federal procurement data** from SAM.gov, FPDS, USAspending, SBA DSBS and GSA CALC.
+
+---
+
 ## Links
 
 - API reference: <https://govconapi.com/api-guide>
 - Tool reference: <https://govconapi.com/mcp/tools>
+- Live coverage and freshness: <https://govconapi.com/api/v1/status>
 - Machine-readable docs: <https://govconapi.com/llms.txt> and <https://govconapi.com/openapi.json>
+- Privacy: <https://govconapi.com/privacy> · Terms: <https://govconapi.com/terms>
 - Support: <support@govconapi.com>
 
 MIT licensed. Data sourced from SAM.gov, FPDS, USAspending, SBA DSBS and GSA CALC, all public federal data.
