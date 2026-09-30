@@ -33,7 +33,7 @@ async def search_opportunities(
 ) -> str:
     """Search federal contract opportunities (SAM.gov data) with filters.
 
-    At least one filter is required. Use specific values:
+    Every filter is optional. Use specific values:
     - naics: 6-digit NAICS code, e.g. "541330" (engineering services)
     - psc: 1-4 char Product Service Code, e.g. "D302" (IT services)
     - naics_multiple: comma-separated NAICS codes, e.g. "541511,541512"
@@ -48,10 +48,10 @@ async def search_opportunities(
       Notice, Sale of Surplus Property, Modification/Amendment/Cancel, Consolidate/
       (Substantially) Bundle. Comma-separate several to match any. Invalid values 400
       the same way as set_aside, the full list comes back in the error.
-    - posted_after / due_before / due_after / date_from / date_to: YYYY-MM-DD. A
-      date_from before your plan's history window is not silently dropped, it's
-      clamped, and the response's `window` block (`clamped`, `date_from_requested`,
-      `reason`) discloses exactly what happened.
+    - posted_after / due_before / due_after / date_from / date_to: YYYY-MM-DD. Paid plans
+      have no search window. On the free trial, search reaches the last 90 days: an older
+      date_from is clamped, not silently dropped, and the response's `window` block
+      (`clamped`, `date_from_requested`, `reason`) discloses exactly what happened.
     - value_min / value_max: USD amounts (only Award Notice records have values)
     - has_attachments: true/false
     - sort_by: posted_date, due_date, award_amount, title, agency, relevance (used
@@ -61,7 +61,7 @@ async def search_opportunities(
     - limit: max 1000
 
     Returns JSON with `data` (matching opportunities), `pagination`, `filters_applied`,
-    and (only when a date_from clamp applied) `window`. For full-database sync use the
+    and `window` (the free trial's 90-day floor, or null fields on paid plans). For full-database sync use the
     recent_changes tool instead. Each result's `award_uei_sam` (when present) is the same
     identifier get_entity/get_company_profile take as `uei`, and `notice_id` is what
     get_opportunity takes.

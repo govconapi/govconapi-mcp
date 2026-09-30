@@ -11,7 +11,7 @@ from ..core import mcp, _get
 from mcp.types import ToolAnnotations
 
 
-# ─── Companies (won at least one award) ───────────────────────────────────
+# ─── Companies (search by name; firms with no awards match too) ───────────────────────────────────
 
 @mcp.tool(title="Search Companies", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
 async def search_companies(
@@ -22,9 +22,9 @@ async def search_companies(
     limit: int = 20,
     offset: int = 0,
 ) -> str:
-    """Search companies that have WON at least one federal award, by name, across both
-    SAM Award Notices and FPDS prime contracts. For ALL registered SAM firms (won an
-    award or not), use search_entities instead.
+    """Search companies by name across SAM Award Notices and FPDS prime contracts. Registered
+    SAM firms with no awards also match by name (up to 200 per search, listed last). To list
+    every registered SAM firm, use search_entities instead.
 
     Capture & Teaming tool, Pro only. Case-insensitive substring match on the name.
 
@@ -138,16 +138,16 @@ async def search_entities(
     richer award-history fields; use this one when you need the full registry, including
     firms with no award history yet.
 
-    Capture & Teaming tool. `q` alone works on every plan; the other filters are Pro.
+    Capture & Teaming tool. Every filter works on every plan.
 
     - q: name substring, min 2 chars
-    - naics: NAICS code, no Y/N suffix (Pro)
-    - state: 2-letter US state (Pro)
+    - naics: NAICS code, no Y/N suffix
+    - state: 2-letter US state
     - business_type: SAM business-type code, e.g. "8W" (WOSB), "QF" (SDVOSB), "27"
-      (self-cert SDB) (Pro), an unrecognized code returns 400 with the full valid list
-    - active_only: only Active registrations (Pro)
+      (self-cert SDB), an unrecognized code returns 400 with the full valid list
+    - active_only: only Active registrations
     - naics_small: exact 6-digit NAICS code (e.g. "236220"), SBA DSBS small-business
-      determination for this NAICS (Pro)
+      determination for this NAICS
     - limit: max 100
 
     Returns each entity's `uei`, the same identifier get_entity, get_company_profile,

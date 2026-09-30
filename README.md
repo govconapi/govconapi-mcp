@@ -4,7 +4,7 @@
 
 ![MCP server](https://img.shields.io/badge/MCP-server-5865F2) ![53 tools](https://img.shields.io/badge/tools-53-1f6feb) ![5 federal sources](https://img.shields.io/badge/sources-5_federal-1f6feb) [![from $19/mo](https://img.shields.io/badge/from-%2419%2Fmo-2ea44f)](https://govconapi.com/pricing)
 
-**Most SAM.gov MCP servers wrap one dataset behind six to ten tools. This is 53 tools across five federal sources, already joined on the identifiers they share, including full text extracted from inside solicitation attachments.**
+**Most SAM.gov MCP servers wrap one dataset behind six to ten tools. This is 53 tools across five federal sources, already joined on the identifiers they share.**
 
 US federal procurement data for agents: **668K** SAM.gov opportunities, **10.6M** FPDS prime contract transactions, **880K** SAM-registered entities, **226K** FFATA subawards, **164K** exclusions, **14K** decided GAO protests, and **~262K** GSA CALC labor rates. Cross-linked on UEI, CAGE, PIID and NAICS, so one question does not become five integrations.
 
@@ -16,9 +16,8 @@ US federal procurement data for agents: **668K** SAM.gov opportunities, **10.6M*
 
 ## Why this, and not the next SAM.gov wrapper
 
-Most federal-contracting MCP servers are thin proxies over the official SAM.gov API. Four concrete differences.
+Most federal-contracting MCP servers are thin proxies over the official SAM.gov API. Three concrete differences.
 
-- **It searches inside the documents, not just the notice.** We extract and index the full text of every document attached to a notice. A corpus study on **2026-07-16** measured **506,382 documents** across **209,095 opportunities**, 31.4 billion characters, including **57,527 files recovered from archives nested up to five levels deep** that never appear in SAM's own attachment list, and **41,764 scanned documents recovered with OCR**. Those five figures are one dated measurement and belong together; the index has grown since, and the running total is on [`/api/v1/status`](https://govconapi.com/api/v1/status). A requirement like CMMC, a clearance level, or an option year is usually in the SOW, not the notice. Most tools structurally cannot see it.
 - **Five sources, already joined.** SAM.gov opportunities and entities, FPDS contract transactions, USAspending/FFATA subawards, SAM exclusions, SBA DSBS certifications and GSA CALC rates, resolved onto shared identifiers. A wrapper hands your agent one dataset and leaves the joins to it.
 - **No SAM.gov entity registration and no company UEI required.** GSA documents 10 requests/day for a non-federal user without a SAM role, and 1,000/day with one. Access here is an email and a key.
 - **53 tools, organised by lifecycle stage.** Market research, opportunity discovery, capture and teaming, bid and negotiate, award and compliance. You should not have to know our URL structure to know which tool answers your question.
@@ -54,10 +53,6 @@ Restart Claude. For Claude Code, Cursor, VS Code, Zed and custom Python agents, 
 
 > Find DoD cybersecurity solicitations posted this month over $1M.
 
-> Which active solicitations mention CMMC anywhere in their attachments?
-
-> Find RFPs requiring an active Secret clearance, even when the notice itself does not say so.
-
 > Who are the entrenched incumbents in NAICS 541512, and how competitive is that market?
 
 > Is this contract entering recompete, and is the incumbent's set-aside certification expiring first?
@@ -81,7 +76,7 @@ Full reference with parameters: **[TOOLS.md](TOOLS.md)**.
 | Award and compliance | 13 | who won, on what terms, was it protested |
 | Agencies, awards, exclusions, identifiers | 4 | name resolution, award notices, screening, DUNS to UEI |
 
-13 tools require Pro and return HTTP 402 on Developer. 4 more work on Developer with specific fields or filters gated. The other 36 have no plan distinction. Each is marked in TOOLS.md.
+15 tools require Pro and return HTTP 402 on Developer. 3 more work on Developer with specific fields gated, and the labor-rate benchmark needs any paid plan. The other 34 have no plan distinction. Each is marked in TOOLS.md.
 
 ---
 
@@ -100,9 +95,9 @@ Full reference with parameters: **[TOOLS.md](TOOLS.md)**.
 
 | Plan | Price | Limits |
 |---|---|---|
-| Free trial | $0, 14 days | 25 requests/day |
+| Free trial | $0, 14 days | 50 requests/day |
 | Developer | $19/mo | 1,000 requests/hour |
-| Pro | $39/mo | adds the 13 Pro tools and richer fields on 4 more |
+| Pro | $39/mo | adds the 15 Pro tools and richer fields on 3 more |
 
 MCP access is included with every plan, including the trial. No separate tier.
 
@@ -114,11 +109,9 @@ MCP access is included with every plan, including the trial. No separate tier.
 
 **`Invalid API key`** , keys start with `gca_`. Get one at [govconapi.com](https://govconapi.com).
 
-**`At least one filter required`** , `search_opportunities` needs at least one filter (naics, keywords, state and so on). For a bulk sync, use `recent_changes` instead.
+**Rate limited (429)** , free trial is 50 calls/day, Developer 1,000/hour.
 
-**Rate limited (429)** , free trial is 25 calls/day, Developer 1,000/hour.
-
-**A 402 naming a specific feature** , that tool is Pro. TOOLS.md marks which.
+**A 402** , that tool is Pro. TOOLS.md marks which.
 
 ---
 

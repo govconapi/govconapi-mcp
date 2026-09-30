@@ -95,7 +95,7 @@ async def list_organizations(
         "hierarchy_level": hierarchy_level, "is_active": is_active,
         "search": search, "limit": limit, "offset": offset,
     }
-    data = await _get("/api/v1/federal-hierarchy/", params)
+    data = await _get("/api/v1/federal-hierarchy", params)
     return json.dumps(data, indent=2, default=str)
 
 

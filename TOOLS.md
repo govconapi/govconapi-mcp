@@ -143,9 +143,9 @@ Parameters: `query`
 
 ### `search_companies` **`Pro`**
 
-Search companies that have WON at least one federal award, by name, across both SAM Award Notices
-and FPDS prime contracts. For ALL registered SAM firms (won an award or not), use search_entities
-instead.
+Search companies by name across SAM Award Notices and FPDS prime contracts. Registered SAM firms
+with no awards also match by name (up to 200 per search, listed last). To list every registered SAM
+firm, use search_entities instead.
 
 Parameters: `q`, `naics`, `agency`, `naics_small`, `limit`, `offset`
 
@@ -170,7 +170,7 @@ firm, not its own history.
 
 Parameters: `uei`, `limit`
 
-### `search_entities` *`Pro fields`*
+### `search_entities`
 
 Search ALL SAM-registered entities by name (won a federal award or not). For companies that have
 actually WON an award, use search_companies instead, it has richer award-history fields; use this
@@ -187,7 +187,7 @@ needs renewal.
 
 Parameters: `within_days`, `state`, `naics`, `limit`, `offset`
 
-### `get_entity`
+### `get_entity` *`Pro fields`*
 
 Get one SAM entity's full registration record by UEI or CAGE code, the same question, two different
 keys, so this is one tool, not two.
@@ -238,7 +238,7 @@ Parameters: `piid`
 
 *What it should cost, the labor rate, whether the team is clean.*
 
-### `get_price_benchmark`
+### `get_price_benchmark` **`Pro`**
 
 Get the percentile distribution of comparable contract VALUE for a NAICS, broken out by pricing
 type. A price-analysis / market-range read for the Negotiate stage, not a win predictor. Factual,
@@ -246,14 +246,14 @@ not scored.
 
 Parameters: `naics`, `set_aside`, `psc`, `pricing_type`, `agency`, `value_basis`, `date_from`, `date_to`
 
-### `get_price_position`
+### `get_price_position` **`Pro`**
 
 Get where YOUR specific contract/bid value sits (percentile rank) against real comparable contracts,
 plus a sample of the nearest ones by value.
 
 Parameters: `naics`, `value`, `set_aside`, `psc`, `pricing_type`, `agency`, `value_basis`, `sample_limit`, `date_from`, `date_to`
 
-### `get_labor_rate_benchmark`
+### `get_labor_rate_benchmark` *`Paid plan`*
 
 Get the awarded labor-rate (should-cost) benchmark for a labor category, from GSA CALC, the labor-
 cost input for a proposal, paired with get_price_benchmark's contract-value read.
@@ -419,7 +419,7 @@ Parameters: `awardee`, `uei`, `naics`, `agency`, `value_min`, `value_max`, `date
 
 *Debarment and suspension screening.*
 
-### `check_exclusion` *`Pro fields`*
+### `check_exclusion`
 
 Check the SAM.gov exclusions list (debarred / suspended entities).
 
@@ -444,8 +444,8 @@ Parameters: `identifier`
 
 | Plan | Price | Limits |
 |---|---|---|
-| Free trial | $0, 14 days | 25 requests/day |
+| Free trial | $0, 14 days | 50 requests/day |
 | Developer | $19/mo | 1,000 requests/hour |
-| Pro | $39/mo | adds the 13 `Pro` tools and richer fields on 4 more |
+| Pro | $39/mo | adds the 15 `Pro` tools and richer fields on 3 more |
 
 Keys at <https://govconapi.com>. Full REST reference at <https://govconapi.com/api-guide>.

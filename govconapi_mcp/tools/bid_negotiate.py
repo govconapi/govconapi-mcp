@@ -114,7 +114,7 @@ async def get_labor_rate_benchmark(
     CALC, the labor-cost input for a proposal, paired with get_price_benchmark's
     contract-value read.
 
-    Bid & Proposal / Negotiate tool, Pro only.
+    Bid & Proposal / Negotiate tool, any paid plan (Developer or Pro), not the free trial.
 
     - labor_category: required, e.g. "Senior Software Engineer"
     - match: contains (default, substring) | exact
