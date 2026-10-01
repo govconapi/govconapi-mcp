@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "govconapi-mcp"
-version = "0.3.0"
+version = "0.3.1"
 description = "MCP server for GovCon API: six task-shaped tools (resolve, search, get, market, price, contact) reaching 53 operations across the federal contracting lifecycle, for Claude Desktop, Claude Code, Cursor, Zed, or any local MCP client."
 readme = "README.md"
 requires-python = ">=3.10"

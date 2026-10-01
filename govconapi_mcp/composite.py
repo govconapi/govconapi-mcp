@@ -210,7 +210,7 @@ async def get(
     """Fetch one record by its ID. IDs come from search results or resolve. (Pro) needs the Pro plan.
 
     - opportunity: notice_id from search(opportunities)
-    - contract (Pro), contract_modifications, contract_vehicle, recompete (Pro): a PIID from search(contracts)
+    - contract (Pro fields), contract_modifications, contract_vehicle, recompete (Pro): a PIID from search(contracts)
       or search(recompetes). contract_vehicle is the IDIQ or schedule the contract was ordered under
     - vehicle, vehicle_holders (Pro): a vehicle PIID from search(vehicles) or get(contract_vehicle)
     - entity: a UEI (12 characters) or CAGE code (5); company_profile, company_awards, company_peers, vendor_risk
@@ -235,7 +235,8 @@ async def market(
     board: str | None = None,
     filters: dict[str, Any] | None = None,
 ) -> str:
-    """How big a NAICS market is, who wins it, and how it buys. A 6-digit `naics` for the per-code views.
+    """How big a NAICS market is, who wins it, and how it buys, across every agency. A 6-digit `naics` for the
+    per-code views, which take no filters (for one agency: search(contracts) with naics and agency).
 
     - size: obligated dollars, award count and concentration
     - competition: offers per award, single-bidder share, set-aside mix
@@ -251,6 +252,11 @@ async def market(
         return await _call(name, {"board": board, **(filters or {})}, "market(leaderboard)")
     if view == "find_codes":
         return await _call(name, dict(filters or {}), "market(find_codes)")
+    if filters:
+        # The per-code views are national: silently dropping an agency or other filter returned the national
+        # market as if it were filtered (GPT review, 2026-10-01). Refuse, and say where agency views live.
+        raise ValueError(f"market({view}) takes only naics and covers every agency; it has no filters. For one "
+                         "agency, use search(contracts) with naics and agency, or search(offices) for its buyers.")
     if not naics:
         raise ValueError(f"market({view}) needs naics, a 6-digit NAICS code (resolve(naics) finds one).")
     return await _call(name, {"code": naics}, f"market({view})")
