@@ -1,4 +1,6 @@
-# GovCon API MCP: the 53 tools
+# GovCon API MCP: the 53 single-purpose tools
+
+The server's default is six task-shaped tools (`resolve`, `search`, `get`, `market`, `price`, `contact`) that call these; see the README. Set `GOVCONAPI_TOOLS=all` to get these 53 instead.
 
 Every tool is one call against `https://govconapi.com`. Organised by GovCon lifecycle stage rather than by
 our internal routing, so you do not need to know our URL structure to know which tool answers your question.

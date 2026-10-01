@@ -2,18 +2,18 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.govconapi/govconapi",
   "title": "GovCon API",
-  "description": "53 tools over US federal procurement: SAM.gov, FPDS awards, entities, subawards, exclusions.",
+  "description": "Six tools over US federal procurement: SAM.gov, FPDS awards, entities, subawards, exclusions.",
   "repository": {
     "url": "https://github.com/govconapi/govconapi-mcp",
     "source": "github"
   },
   "websiteUrl": "https://govconapi.com/mcp",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "govconapi-mcp",
-      "version": "0.2.4",
+      "version": "0.3.0",
       "transport": {
         "type": "stdio"
       },
@@ -24,8 +24,21 @@
           "isRequired": true,
           "isSecret": true,
           "format": "string"
+        },
+        {
+          "name": "GOVCONAPI_TOOLS",
+          "description": "Optional. Set to all for the 53 single-purpose tools instead of the six task-shaped ones.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
         }
       ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.govconapi.com/mcp"
     }
   ]
 }

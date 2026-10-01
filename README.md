@@ -2,9 +2,9 @@
 
 # GovCon API MCP
 
-![MCP server](https://img.shields.io/badge/MCP-server-5865F2) ![53 tools](https://img.shields.io/badge/tools-53-1f6feb) ![5 federal sources](https://img.shields.io/badge/sources-5_federal-1f6feb) [![from $19/mo](https://img.shields.io/badge/from-%2419%2Fmo-2ea44f)](https://govconapi.com/pricing)
+![MCP server](https://img.shields.io/badge/MCP-server-5865F2) ![6 tools](https://img.shields.io/badge/tools-6-1f6feb) ![5 federal sources](https://img.shields.io/badge/sources-5_federal-1f6feb) [![from $19/mo](https://img.shields.io/badge/from-%2419%2Fmo-2ea44f)](https://govconapi.com/pricing)
 
-**Most SAM.gov MCP servers wrap one dataset behind six to ten tools. This is 53 tools across five federal sources, already joined on the identifiers they share.**
+**Most SAM.gov MCP servers wrap one dataset behind six to ten tools. This is six tools that reach 53 operations across five federal sources, already joined on the identifiers they share.**
 
 US federal procurement data for agents: **668K** SAM.gov opportunities, **10.6M** FPDS prime contract transactions, **880K** SAM-registered entities, **226K** FFATA subawards, **164K** exclusions, **14K** decided GAO protests, and **~262K** GSA CALC labor rates. Cross-linked on UEI, CAGE, PIID and NAICS, so one question does not become five integrations.
 
@@ -20,11 +20,15 @@ Most federal-contracting MCP servers are thin proxies over the official SAM.gov 
 
 - **Five sources, already joined.** SAM.gov opportunities and entities, FPDS contract transactions, USAspending/FFATA subawards, SAM exclusions, SBA DSBS certifications and GSA CALC rates, resolved onto shared identifiers. A wrapper hands your agent one dataset and leaves the joins to it.
 - **No SAM.gov entity registration and no company UEI required.** GSA documents 10 requests/day for a non-federal user without a SAM role, and 1,000/day with one. Access here is an email and a key.
-- **53 tools, organised by lifecycle stage.** Market research, opportunity discovery, capture and teaming, bid and negotiate, award and compliance. You should not have to know our URL structure to know which tool answers your question.
+- **Six tools, each named for a job.** `resolve`, `search`, `get`, `market`, `price`, `contact` reach every dataset and record: a model picks the right one more reliably from six than from fifty, and their definitions take about a sixth of the context. The 53 single-purpose tools behind them are one setting away (`GOVCONAPI_TOOLS=all`).
 
 ---
 
 ## Connect
+
+**Claude, no install.** In Claude (web, desktop or mobile), add a custom connector with the address `https://mcp.govconapi.com/mcp` and sign in with your email. Steps: [govconapi.com/mcp/tools#claude-connector](https://govconapi.com/mcp/tools#claude-connector).
+
+**Local install,** for Claude Code, Cursor, VS Code, Zed, Claude Desktop config files and custom agents:
 
 ```bash
 pipx install govconapi-mcp
@@ -45,7 +49,7 @@ pipx install govconapi-mcp
 }
 ```
 
-Restart Claude. For Claude Code, Cursor, VS Code, Zed and custom Python agents, see the [install reference](https://govconapi.com/mcp/tools#install).
+Restart Claude. For Claude Code, Cursor, VS Code, Zed and custom Python agents, see the [install reference](https://govconapi.com/mcp/tools#install). To get the 53 single-purpose tools instead of the six, add `"GOVCONAPI_TOOLS": "all"` to the same `env` block.
 
 ---
 
@@ -63,7 +67,20 @@ Restart Claude. For Claude Code, Cursor, VS Code, Zed and custom Python agents, 
 
 ---
 
-## The 53 tools
+## The six tools
+
+| Tool | What you ask it |
+|---|---|
+| `resolve` | Names to IDs: an agency to its filter value, title words to NAICS codes, a company to its UEI, a DUNS to a UEI |
+| `search` | One of 17 datasets: opportunities, forecasts, contracts, vehicles, subawards, recompetes, companies, entities, partners, protests, exclusions, wage determinations and more |
+| `get` | One record by ID: an opportunity, contract, vehicle and its holders, recompete, company profile, vendor risk report, protests on a solicitation, wage determination |
+| `market` | A NAICS market: size, competition, solicitation language, small buys, leaderboards |
+| `price` | Contract value benchmarks, where a bid ranks, GSA labor rates, SCA and Davis-Bacon wage rates |
+| `contact` | A company's decision-maker, or a contracting officer |
+
+They call the 53 single-purpose tools below, so each capability keeps its plan.
+
+## The 53 single-purpose tools (`GOVCONAPI_TOOLS=all`)
 
 Full reference with parameters: **[TOOLS.md](TOOLS.md)**.
 
