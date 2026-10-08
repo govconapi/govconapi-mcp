@@ -28,6 +28,8 @@ Most federal-contracting MCP servers are thin proxies over the official SAM.gov 
 
 **Claude, no install.** In Claude (web, desktop or mobile), add a custom connector with the address `https://mcp.govconapi.com/mcp` and sign in with your email. Steps: [govconapi.com/mcp/tools#claude-connector](https://govconapi.com/mcp/tools#claude-connector).
 
+**ChatGPT, no install.** In ChatGPT on the web, add a custom MCP server with the same address, authentication OAuth, and sign in with your email. Steps: [govconapi.com/mcp/tools#chatgpt](https://govconapi.com/mcp/tools#chatgpt).
+
 **Local install,** for Claude Code, Cursor, VS Code, Zed, Claude Desktop config files and custom agents:
 
 ```bash
