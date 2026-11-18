@@ -26,6 +26,9 @@ async def search_opportunities(
     value_min: Optional[float] = None,
     value_max: Optional[float] = None,
     has_attachments: Optional[bool] = None,
+    solicitation_number: Optional[str] = None,
+    content: Optional[str] = None,
+    fields: Optional[str] = None,
     sort_by: Optional[str] = None,
     sort_order: Optional[str] = None,
     limit: int = 20,
@@ -54,6 +57,14 @@ async def search_opportunities(
       (`clamped`, `date_from_requested`, `reason`) discloses exactly what happened.
     - value_min / value_max: USD amounts (only Award Notice records have values)
     - has_attachments: true/false
+    - solicitation_number: exact solicitation number (case-insensitive), e.g. "N5523627Q0003". Returns every
+      notice in that procurement (presolicitation, solicitation, amendments, award), so sort_by=posted_date to
+      walk the chain or pick the newest deadline
+    - content: full-text search INSIDE the attached documents (PDF, Word, Excel, scanned pages), not just the
+      title and description: award method, clearance level, incumbent, CMMC or FedRAMP language. Quoted phrases
+      work, e.g. "lowest price technically acceptable". Pro plan
+    - fields: comma-separated response fields to return, e.g. "notice_id,title,response_deadline,solicitation_number",
+      to scan many notices cheaply before fetching the full record with get_opportunity
     - sort_by: posted_date, due_date, award_amount, title, agency, relevance (used
       automatically when keywords is set and sort_by is omitted)
     - sort_order: asc | desc (default desc), e.g. sort_by=due_date + sort_order=asc for
@@ -66,6 +77,15 @@ async def search_opportunities(
     identifier get_entity/get_company_profile take as `uei`, and `notice_id` is what
     get_opportunity takes.
     """
+    # The API ignores an empty solicitation_number or content and returns every notice, so an
+    # empty value is refused here rather than turned into an unfiltered search.
+    exact = {"solicitation_number": solicitation_number, "content": content, "fields": fields}
+    for name, value in exact.items():
+        if value is not None:
+            exact[name] = value.strip()
+            if not exact[name]:
+                raise RuntimeError(f"`{name}` is empty: leave it out or give a value.")
+    solicitation_number, content, fields = exact["solicitation_number"], exact["content"], exact["fields"]
     params = {
         "naics": naics, "psc": psc, "naics_multiple": naics_multiple,
         "agency": agency, "keywords": keywords, "state": state,
@@ -73,7 +93,8 @@ async def search_opportunities(
         "posted_after": posted_after, "due_before": due_before, "due_after": due_after,
         "date_from": date_from, "date_to": date_to,
         "value_min": value_min, "value_max": value_max,
-        "has_attachments": has_attachments, "sort_by": sort_by, "sort_order": sort_order,
+        "has_attachments": has_attachments, "solicitation_number": solicitation_number,
+        "content": content, "fields": fields, "sort_by": sort_by, "sort_order": sort_order,
         "limit": limit, "offset": offset,
     }
     data = await _get("/api/v1/opportunities/search", params)
@@ -81,12 +102,19 @@ async def search_opportunities(
 
 
 @mcp.tool(title="Get Opportunity", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
-async def get_opportunity(notice_id: str) -> str:
+async def get_opportunity(notice_id: str, attachments: bool = False) -> str:
     """Fetch a single contract opportunity by its notice_id.
 
-    Returns the full record including agency, contacts, description, attachments,
+    Returns the full record including agency, contacts, description, attachment download links,
     award data (if applicable), and 50+ structured fields.
+
+    - attachments: true returns the notice's attached files instead: each file's name, size, type,
+      resource_id and SAM.gov download URL, so you can pick the solicitation, statement of work or
+      wage determination before downloading. The files download from SAM.gov, not from this API.
     """
+    if attachments:
+        data = await _get(f"/api/v1/opportunities/{notice_id}/attachments")
+        return json.dumps(data, indent=2, default=str)
     data = await _get(f"/api/v1/opportunities/{notice_id}")
     return json.dumps(data, indent=2, default=str)
 

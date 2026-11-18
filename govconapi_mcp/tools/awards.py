@@ -46,7 +46,7 @@ async def search_awards(
     - limit: max 1000
     """
     params = {
-        "awardee": awardee, "uei": uei, "naics": naics, "agency": agency,
+        "awardee_name": awardee, "uei": uei, "naics": naics, "agency": agency,
         "value_min": value_min, "value_max": value_max,
         "date_from": date_from, "date_to": date_to,
         "limit": limit, "offset": offset,

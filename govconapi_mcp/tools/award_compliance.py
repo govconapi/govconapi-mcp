@@ -200,7 +200,8 @@ async def get_vehicle(piid: str) -> str:
 
 
 @mcp.tool(title="Get Vehicle Holders", annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=True))
-async def get_vehicle_holders(piid: str, limit: int = 50) -> str:
+async def get_vehicle_holders(piid: str, limit: int = 50, awardee_limit: int = 25,
+                              family_piids: bool = False) -> str:
     """Get who holds a vehicle AND who's actually earning through it, two distinct
     populations, don't conflate them: a firm can hold a vehicle for years and earn
     nothing on it.
@@ -208,17 +209,24 @@ async def get_vehicle_holders(piid: str, limit: int = 50) -> str:
     Award & Compliance tool, Pro only. The "can I even compete for this work" answer, on a multi-award vehicle, only holders can bid task orders.
 
     - piid: vehicle's own PIID (from search_vehicles or get_contract_vehicle)
-    - limit: max 250
+    - limit: earners returned, ranked by dollars (max 250)
+    - awardee_limit: holders returned, most recently active first (default 25; a big multiple-award
+      family has 1,500+ holders). `awardee_count` is always the full total and `awardees_truncated`
+      says when the list was cut
+    - family_piids: true adds every PIID in the vehicle family (can be 1,500+); default false returns
+      only `vehicle_family.piid_count`
 
     Returns `awardees` (hold the vehicle) and `earners` (have actually been paid through
     it) as separate lists with counts (`awardee_count`/`earner_count`), on a real
     multi-award vehicle these can be wildly different (e.g. 1,596 awardees, 2 earners),
     which is the whole point of the distinction. Each entry's `recipient_uei` chains into
-    Capture/Teaming tools. Also returns `vehicle_family.piids`: this rolls up EVERY
+    Capture/Teaming tools. Also returns `vehicle_family`: this rolls up EVERY
     related PIID under the same vehicle family, not just the one you asked for, so
     `awardee_count` reflects the whole family, not a single order.
     """
-    data = await _get(f"/api/v1/vehicles/{piid}/holders", {"limit": limit})
+    data = await _get(f"/api/v1/vehicles/{piid}/holders",
+                      {"limit": limit, "awardee_limit": awardee_limit,
+                       "family_piids": "true" if family_piids else "false"})
     return json.dumps(data, indent=2, default=str)
 
 

@@ -148,15 +148,17 @@ async def search(
     limit: int = 20,
     offset: int = 0,
 ) -> str:
-    """Search one dataset. `filters` holds that dataset's filters; an unknown filter returns the full list.
+    """Search one dataset. `filters` holds that dataset's filters; an unknown filter is refused with the list of valid ones.
     Agency values come from resolve(agency), NAICS codes from resolve(naics), UEIs from resolve(company).
     Dates are YYYY-MM-DD. (Pro) marks datasets that need the Pro plan. Keep `limit` small (20-50) and page with
     `offset`: rows are large. Only opportunities, forecasts and partners take `keywords`.
 
     - opportunities: SAM.gov notices. naics, psc, agency, keywords, state, set_aside (HUBZone, WOSB, 8(a), Veteran,
       Small Business), notice_type (Solicitation, Combined Synopsis/Solicitation, Presolicitation, Sources Sought,
-      Award Notice), posted_after, due_before, due_after, value_min, value_max;
-      sort_by: posted_date | due_date | award_amount | title | agency | relevance
+      Award Notice), posted_after, due_before, due_after, value_min, value_max, solicitation_number (exact: every
+      notice in one procurement), content (Pro: words inside the attached documents), fields (comma-separated
+      columns, e.g. "notice_id,title,response_deadline" for a cheap scan);
+      sort_by: posted_date | due_date | award_amount | title | agency | relevance; sort_order: asc | desc
     - opportunity_changes: notices added or changed since a time. since (ISO timestamp, required); no other filters
     - forecasts: work agencies plan to buy. agency, naics, set_aside, state, est_award_fy, keywords, is_recompete,
       source (fco | dhs | hhs); sort_by: est_award_fy | est_solicitation_date | value_high | agency
@@ -168,13 +170,17 @@ async def search(
       GWAC | BOA); active_only, ceiling_min. No name search: find a vehicle's PIID via contracts or the notice
     - subawards: who subcontracts to whom. prime_uei, sub_uei, sub_name, naics, agency, piid, date_from, date_to,
       amount_min; sort_by: subaward_action_date | subaward_amount
-    - recompetes (Pro): contracts ending soon. naics, agency, set_aside, state, ends_within_months, amount_min;
+    - recompetes (Pro): contracts ending soon. naics, agency, set_aside, state, ends_after_months,
+      ends_within_months, date_anchor (current_end | potential_end), options_exhausted_only, amount_min,
+      early_signal_days (1-365, default 180; 7-30 keeps the market-level early_signals short), early_signal_types;
       sort_by: ends_soonest | value | mod_churn | de_obligated
-    - companies (Pro): firms with award history. q (name, REQUIRED), naics, agency, naics_small
+    - companies (Pro): firms with award history, by name. q (name, REQUIRED), naics, agency, naics_small.
+      Ranking firms without a name ("who wins this work") is partners
     - entities: every SAM registration. q (name), naics, state, business_type (SAM code: "8W" WOSB, "QF" SDVOSB),
       naics_small (a NAICS the firm is SBA-small for), active_only
     - expiring_registrations (Pro): SAM registrations about to lapse. within_days, state, naics
-    - partners (Pro): teaming partners with past performance. naics, agency, state, psc, keywords,
+    - partners (Pro): firms ranked by dollars won (FY2025 onward) in a NAICS, agency, state or PSC: who wins
+      this work, the incumbents, teaming candidates. naics, agency, state, psc, keywords,
       set_aside (sdvosb | vosb | wosb | hubzone | 8a | sdb | minority_owned)
     - protests: GAO bid protests. agency, protester, status (Open | Closed), outcome (Denied | Dismissed | Sustained |
       Withdrawn), filed_from, filed_to; sort: recent | oldest | filed | due
@@ -221,8 +227,9 @@ async def get(
     - office: office_code from search(offices)
     - organization, organization_relationships: organization_id from resolve(organization);
       options.direction = children or ancestors for relationships
-    `options` takes the record's extra arguments: company_awards {limit, offset, sort_by, sort_order},
-    vehicle_holders {limit}, contract_modifications {limit, offset}, organization_relationships {direction}.
+    `options` takes the record's extra arguments: opportunity {attachments: true for the notice's files with names,
+    sizes and download URLs}, company_awards {limit, offset, sort_by, sort_order}, vehicle_holders {limit,
+    awardee_limit}, contract_modifications {limit, offset}, organization_relationships {direction}.
     """
     _choose(GET, kind, "kind")
     name, args = _get_args(kind, id, options)
@@ -329,5 +336,8 @@ def build(**fastmcp_kwargs) -> FastMCP:
     """A FastMCP server carrying the six. The stdio server (server.py) and the hosted connector call this."""
     server = FastMCP("govconapi", **fastmcp_kwargs)
     for fn in (resolve, search, get, market, price, contact):
-        server.add_tool(fn, name=fn.__name__, title=TITLES[fn.__name__], annotations=READ_ONLY)
+        title = TITLES[fn.__name__]
+        # The title goes in both places: the spec's top-level Tool.title, and annotations.title, which
+        # Claude's directory portal reads (it flagged all six as untitled with only the first).
+        server.add_tool(fn, name=fn.__name__, title=title, annotations=READ_ONLY.model_copy(update={"title": title}))
     return server

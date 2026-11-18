@@ -84,5 +84,17 @@ async def _get(path: str, params: dict | None = None) -> dict:
         except Exception:
             detail = "Not found"
         raise RuntimeError(f"Not found: {detail}")
+    if r.status_code >= 400:
+        # Every other refusal (422 on an out-of-range value, 403, ...) is an error too, never a
+        # result: a 422 body returned as data reads to the model as a successful call.
+        try:
+            detail = r.json().get("detail", r.text)
+        except Exception:
+            detail = r.text
+        if isinstance(detail, list):
+            detail = "; ".join(
+                f"{'.'.join(str(x) for x in (d.get('loc') or [])[1:])}: {d.get('msg')}"
+                for d in detail if isinstance(d, dict)) or str(detail)
+        raise RuntimeError(f"Bad request: {detail}")
 
     return r.json()

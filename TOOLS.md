@@ -111,13 +111,14 @@ Parameters: `code`
 
 Search federal contract opportunities (SAM.gov data) with filters.
 
-Parameters: `naics`, `psc`, `naics_multiple`, `agency`, `keywords`, `state`, `set_aside`, `notice_type`, `posted_after`, `due_before`, `due_after`, `date_from`, `date_to`, `value_min`, `value_max`, `has_attachments`, `sort_by`, `sort_order`, `limit`, `offset`
+Parameters: `naics`, `psc`, `naics_multiple`, `agency`, `keywords`, `state`, `set_aside`, `notice_type`, `posted_after`, `due_before`, `due_after`, `date_from`, `date_to`, `value_min`, `value_max`, `has_attachments`, `solicitation_number`, `content`, `fields`, `sort_by`, `sort_order`, `limit`, `offset`
 
 ### `get_opportunity`
 
-Fetch a single contract opportunity by its notice_id.
+Fetch a single contract opportunity by its notice_id. `attachments: true` returns its attached files instead
+(name, size, type, download URL).
 
-Parameters: `notice_id`
+Parameters: `notice_id`, `attachments`
 
 ### `recent_changes`
 
@@ -224,7 +225,7 @@ Find contracts entering recompete within a window, a market read for NEW busines
 contract is about to be up for grabs), and also useful post-award to watch your OWN contract's
 expiration (see get_recompete for the single-contract form of that).
 
-Parameters: `naics`, `agency`, `set_aside`, `state`, `amount_min`, `amount_max`, `ends_after_months`, `ends_within_months`, `date_anchor`, `options_exhausted_only`, `incumbent_excluded`, `sort_by`, `limit`, `offset`
+Parameters: `naics`, `agency`, `set_aside`, `state`, `amount_min`, `amount_max`, `ends_after_months`, `ends_within_months`, `date_anchor`, `options_exhausted_only`, `incumbent_excluded`, `sort_by`, `early_signal_days`, `early_signal_types`, `limit`, `offset`
 
 ### `get_recompete` **`Pro`**
 
@@ -356,9 +357,10 @@ Parameters: `piid`
 ### `get_vehicle_holders` **`Pro`**
 
 Get who holds a vehicle AND who's actually earning through it, two distinct populations, don't
-conflate them: a firm can hold a vehicle for years and earn nothing on it.
+conflate them: a firm can hold a vehicle for years and earn nothing on it. Holders come back 25 at a time
+(most recently active first) with the full count, so a 1,500-holder family stays small.
 
-Parameters: `piid`, `limit`
+Parameters: `piid`, `limit`, `awardee_limit`, `family_piids`
 
 ### `search_subawards`
 

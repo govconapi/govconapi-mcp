@@ -34,7 +34,7 @@ async def lookup_agency(query: str) -> str:
         "fema": "federal emergency management",
         "dod": "defense", "usda": "agriculture", "doj": "justice",
         "dot": "transportation", "hhs": "health and human", "dhs": "homeland security",
-        "epa": "environmental protection", "nasa": "aeronautics", "nih": "health",
+        "epa": "environmental protection", "nasa": "aeronautics", "nih": "national institutes of health",
         "va": "veterans", "irs": "internal revenue", "sec": "securities exchange",
         "fbi": "investigation", "cia": "intelligence", "dea": "drug enforcement",
         "atf": "alcohol tobacco", "nsa": "national security", "usps": "postal",

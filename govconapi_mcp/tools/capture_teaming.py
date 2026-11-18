@@ -308,6 +308,8 @@ async def search_recompetes(
     options_exhausted_only: bool = False,
     incumbent_excluded: Optional[bool] = None,
     sort_by: str = "ends_soonest",
+    early_signal_days: Optional[int] = None,
+    early_signal_types: Optional[str] = None,
     limit: int = 50,
     offset: int = 0,
 ) -> str:
@@ -330,6 +332,10 @@ async def search_recompetes(
       exclusions list (can't legally win the recompete); false = only clean incumbents;
       omit for both
     - sort_by: ends_soonest | value | mod_churn | de_obligated
+    - early_signal_days: how far back (1-365 days, default 180) to pull the market-level `early_signals`
+      (live notices in the same NAICS/agency that may precede a recompete); set 7-30 for a short, current list
+    - early_signal_types: comma-separated notice types for those signals: sources_sought, rfi,
+      presolicitation, special_notice, industry_day, solicitation, rfp, combined, justification, award_notice
 
     Returns each row's `agency_code`/`sub_agency_code` alongside the published `agency`/
     `sub_agency` names, and `award_id_piid`, pass that to get_recompete for the full
@@ -343,6 +349,7 @@ async def search_recompetes(
               "ends_after_months": ends_after_months, "ends_within_months": ends_within_months,
               "date_anchor": date_anchor, "options_exhausted_only": options_exhausted_only,
               "incumbent_excluded": incumbent_excluded,
+              "early_signal_days": early_signal_days, "early_signal_types": early_signal_types,
               "sort_by": sort_by, "limit": limit, "offset": offset}
     data = await _get("/api/v1/recompetes", params)
     return json.dumps(data, indent=2, default=str)
